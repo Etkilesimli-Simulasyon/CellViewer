@@ -1,12 +1,3 @@
-<!--
-  Unity WebGL Template
-  (Assets/WebGLTemplates/MebResponsive/index.html)
-
-  ▸ Dosya adları Unity tarafından derleme sırasında otomatik doldurulur
-    ––– {{ macro }} sözdizimi sayesinde build adı ne olursa olsun çalışır.
-  ▸ “TemplateData” klasörünü ve görselleri aynı dizinde tutun.
-  ▸ Player Settings ▸ WebGL ▸ Template → “MebResponsive” seçin, yeter.
--->
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -14,7 +5,6 @@
   <title>EBA | WebGL</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <link rel="shortcut icon" href="TemplateData/favicon.ico" />
-  <!-- Projenizin responsive stil dosyası -->
   <link rel="stylesheet" href="TemplateData/style.css" />
 
   <style>
@@ -30,10 +20,35 @@
     #meb-loading-overlay.loaded{
       opacity:0;pointer-events:none;transition:opacity .3s ease
     }
+
+    /* === 900x1600 DİKEY SABİTLEME === */
+    body {
+        /* Sayfanın merkezinde konumlandırma için */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh; /* Tam sayfa yüksekliği */
+        margin: 0;
+        overflow: hidden; /* Taşmayı önlemek için */
+    }
+
+    /* Ana konteynerin boyutunu 900x1600 olarak sabitler */
+    #unity-container {
+        width: 900px;  /* Sabit Genişlik */
+        height: 1600px; /* Sabit Yükseklik (Dikey) */
+        position: relative; /* Tam ekran düğmesi için gereklidir */
+        box-shadow: 0 0 10px rgba(0,0,0,0.5); /* Görsel ayrım için */
+    }
+
+    /* Canvas'ın konteynerin tamamını kaplamasını sağlar */
+    #unity-canvas {
+        width: 100%;
+        height: 100%;
+    }
+    /* ================================== */
   </style>
 </head>
 <body>
-  <!-- ███ YÜKLEME OVERLAY ███ -->
   <div id="meb-loading-overlay" role="alert" aria-live="polite">
     <img id="meb-logo" src="TemplateData/meb-logo.png" alt="MEB Logo">
     <div id="meb-spinner-container" aria-hidden="true">
@@ -46,14 +61,11 @@
     </div>
   </div>
 
-  <!-- ███ UNITY CANVAS ███ -->
-  <!-- ‘data-build’ ile klasör adını parametreleştirebilirsiniz (varsayılan: Build) -->
   <div id="unity-container">
     <canvas id="unity-canvas" tabindex="-1" data-build="Build"></canvas>
     <div id="unity-warning" style="display:none"></div>
   </div>
 
-  <!-- Tam ekran -->
   <button id="unity-fullscreen-button" aria-label="Tam Ekran"></button>
 
   <script>
@@ -80,7 +92,9 @@
       companyName:  'DefaultCompany',
       productName:  'EBA',
       productVersion:'0.1.0',
-      devicePixelRatio: Math.min(window.devicePixelRatio, 2)
+      devicePixelRatio: Math.min(window.devicePixelRatio, 2),
+      // === YENİ AYAR: Canvas boyutunu tarayıcıya göre ölçeklemeyi kapat ===
+      matchWebGLToCanvasSize: false 
     };
 
     /* === Unity loader’ı ekle === */
